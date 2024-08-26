@@ -38,13 +38,10 @@ exports.post_login = asyncHandler(async (req, res, next) => {
             online: true
         }});
 
-        let tokens = {
+        return res.json({
             accessToken: accessToken,
             refreshToken: refreshToken
-        };
-
-        res.cookie('tokens', accessToken, {
-        }).send();
+        });
 
     }catch(err){
         console.log(err);
@@ -81,7 +78,6 @@ exports.post_logout = asyncHandler(async (req, res, next) => {
     await users.updateOne({username: req.body.username}, {$set: {
         online: false
     }});
-    res.cookie('tokens', '', {httpOnly:true, expires: new Date(0)});
     res.status(200).json("You have logged out.");
 });
 
